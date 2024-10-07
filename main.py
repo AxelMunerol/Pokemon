@@ -1,8 +1,8 @@
-
-#import combat
 import requests
 import random
-import json
+import combat  # Assurez-vous que la fonction combat est bien définie dans combat.py
+
+
 def tournoi(participants):
     # Boucle principale pour continuer jusqu'au gagnant final
     while len(participants) > 1:
@@ -14,18 +14,23 @@ def tournoi(participants):
             fighter_1 = participants[0]
             fighter_2 = participants[1]
 
-            f1 = pokemons[f'pokemon_{fighter_1}']
-            name_f1 = f1["name"].capitalize()
+            # Charger les pokémons depuis le dictionnaire 'pokemons'
+            pokemon1 = pokemons[f'pokemon_{fighter_1}']
+            pokemon2 = pokemons[f'pokemon_{fighter_2}']
 
-            f2 = pokemons[f'pokemon_{fighter_2}']
-            name_f2 = f2["name"].capitalize()
+            name_f1 = pokemon1["name"].capitalize()
+            name_f2 = pokemon2["name"].capitalize()
 
+            # Appeler la fonction de combat
+            gagnant, perdant = combat.combat(pokemon1, pokemon2)
+            if gagnant["name"] == name_f1:
+                winner = fighter_1
+            else:
+                winner = fighter_2
 
-            # Choisir aléatoirement le gagnant du combat
-            winner = random.choice([fighter_1, fighter_2])
-            data_winner = pokemons[f'pokemon_{winner}']
-            name_winner = data_winner["name"].capitalize()
-            print(f"Combat : {name_f1} vs {name_f2} -> Gagnant : {name_winner}")
+            # Afficher les résultats
+            print(f"Combat : {name_f1} vs {name_f2} -> Gagnant : {gagnant['name'].capitalize()}")
+            print('-----------------------------------------')
 
             # Ajouter le gagnant à la liste des gagnants
             winners.append(winner)
@@ -41,58 +46,41 @@ def tournoi(participants):
 
         # Les gagnants deviennent les nouveaux participants
         participants = winners
-        print(f"nouveau tour")
+        print("------------------------------------")
+        print(f"NOUVEAU TOUR")
+        print('-------------------------------------')
 
     # Affichage du gagnant final
     final_winner = participants[0]
-    f1 = pokemons[f'pokemon_{final_winner}']
-    name_f1 = f1["name"].capitalize()
+    pokemon_final = pokemons[f'pokemon_{final_winner}']
+    name_final = pokemon_final["name"].capitalize()
 
-    print(f"Le grand gagnant est : {name_f1}")
+    print(f"Le grand gagnant est : {name_final}")
     return final_winner
 
-liste_chiffre_tournoi = []
-urls =[]
-liste_id = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
 
-url = "https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0"
-response = requests.get(url)
-
-# Si la requête réussit
-if response.status_code == 200:
-    # Convertir la réponse JSON en dictionnaire Python
-    data = response.json()
-
-    # Récupérer uniquement le champ 'results'
-    results = data.get('results', None)
-else:
-    print(f"Erreur lors de la requête: {response.status_code}")
-
-
+# Code pour télécharger et charger les Pokémon
+liste_id = [i for i in range(16)]  # IDs pour 16 pokémons aléatoires
+urls = []
 plage_1 = list(range(0, 1025))        # de 0 à 1025 inclus
-plage_2 = list(range(10001, 10278))    # de 1001 à 10277 inclus
+plage_2 = list(range(10001, 10278))    # de 10001 à 10277 inclus
 tous_les_numeros = plage_1 + plage_2
 numeros_random = random.sample(tous_les_numeros, 16)
 
+# Récupérer les URLs pour les Pokémon aléatoires
 for chiffre in numeros_random:
     urls.append(f'https://pokeapi.co/api/v2/pokemon/{chiffre}')
 
+# Dictionnaire pour stocker les Pokémon
 pokemons = {}
 
+# Télécharger les données des Pokémon
 for index, url in enumerate(urls):
     response = requests.get(url)
-
-    # Vérifier si la requête a réussi
     if response.status_code == 200:
-        # Enregistrer la réponse dans le dictionnaire avec une clé unique
         pokemons[f'pokemon_{index}'] = response.json()
     else:
         print(f"Erreur lors de la récupération de {url}: {response.status_code}")
 
-random.shuffle(liste_id)
-
-
-
+# Lancer le tournoi
 tournoi(liste_id)
-#combat.coucou()
-
