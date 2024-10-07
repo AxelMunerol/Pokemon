@@ -23,7 +23,7 @@ def combat(f1,f2):
     fighter1 = {'name': f1["name"], 'hp' : get_stat(f1,'hp'),'attack': get_stat(f1,'attack'), 'speed': get_stat(f1,'speed')}
     fighter2 = {'name': f2["name"], 'hp': get_stat(f2, 'hp'), 'attack': get_stat(f2, 'attack'), 'speed' : get_stat(f2,'speed')}
 
-    if fighter1['speed'] < fighter2['speed']:
+    if fighter1['speed'] > fighter2['speed']:
         attaquant, defenseur = fighter1, fighter2
     elif fighter1['speed'] == fighter2['speed']:
         attaquant, defenseur = random.choice([(fighter1, fighter2), (fighter2, fighter1)])
