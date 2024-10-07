@@ -1,6 +1,6 @@
 import requests
 import random
-import combat  # Assurez-vous que la fonction combat est bien définie dans combat.py
+from combat import combat  # Assurez-vous que la fonction combat est bien définie dans un fichier combat.py
 
 
 def tournoi(participants):
@@ -9,10 +9,10 @@ def tournoi(participants):
         winners = []  # Liste pour les gagnants de chaque phase
 
         # Boucle des combats dans le tour actuel
-        while len(participants) > 1:
+        while len(participants) >= 2:
             # Choisir deux participants pour combattre
-            fighter_1 = participants[0]
-            fighter_2 = participants[1]
+            fighter_1 = participants.pop(0)
+            fighter_2 = participants.pop(0)
 
             # Charger les pokémons depuis le dictionnaire 'pokemons'
             pokemon1 = pokemons[f'pokemon_{fighter_1}']
@@ -22,7 +22,7 @@ def tournoi(participants):
             name_f2 = pokemon2["name"].capitalize()
 
             # Appeler la fonction de combat
-            gagnant, perdant = combat.combat(pokemon1, pokemon2)
+            gagnant, perdant = combat(pokemon1, pokemon2)
             if gagnant["name"] == name_f1:
                 winner = fighter_1
             else:
@@ -35,16 +35,13 @@ def tournoi(participants):
             # Ajouter le gagnant à la liste des gagnants
             winners.append(winner)
 
-            # Supprimer les combattants de la liste
-            participants = participants[2:]
-
         # Si un participant n'a pas eu de pair, il est qualifié automatiquement
         if len(participants) == 1:
             lone_participant = participants.pop()
             winners.append(lone_participant)
             print(f"{lone_participant} est qualifié automatiquement.")
 
-        # Les gagnants deviennent les nouveaux participants
+        # Les gagnants deviennent les nouveaux participants pour le prochain tour
         participants = winners
         print("------------------------------------")
         print(f"NOUVEAU TOUR")
