@@ -9,8 +9,19 @@ def get_stat(pokemon, stat_name):
 
 def combat(f1, f2):
     # Préparer les deux combattants avec leurs stats pertinentes
-    fighter1 = {'name': f1["name"], 'hp': get_stat(f1, 'hp'), 'attack': get_stat(f1, 'attack'), 'speed': get_stat(f1, 'speed')}
-    fighter2 = {'name': f2["name"], 'hp': get_stat(f2, 'hp'), 'attack': get_stat(f2, 'attack'), 'speed': get_stat(f2, 'speed')}
+    fighter1 = {'name': f1["name"], 'hp': get_stat(f1, 'hp'), 'attack': get_stat(f1, 'attack'), 'speed': get_stat(f1, 'speed'), 'defense': get_stat(f1, 'defense')}
+    fighter2 = {'name': f2["name"], 'hp': get_stat(f2, 'hp'), 'attack': get_stat(f2, 'attack'), 'speed': get_stat(f2, 'speed'), 'defense': get_stat(f2, 'defense')}
+
+    #recalcul des attaques
+    fighter1['attack'] -= fighter2['defense']
+    fighter2['attack'] -= fighter1['defense']
+
+    if fighter1['attack'] < 0:
+        fighter1['attack'] = 1
+    if fighter2['attack'] < 0:
+        fighter2['attack'] = 1
+
+
 
     # Déterminer qui attaque en premier
     if fighter1['speed'] > fighter2['speed']:
@@ -21,7 +32,6 @@ def combat(f1, f2):
         attaquant, defenseur = fighter2, fighter1
 
     print(f"Le combat commence! {attaquant['name']} attaque en premier!")
-
     # Boucle de combat
     while defenseur['hp'] > 0:
         print(f"{attaquant['name']} attaque {defenseur['name']} avec une force de {attaquant['attack']}")
