@@ -32,7 +32,7 @@ def combat(f1, f2):
             defenseur['hp'] = 0
             print(f"La vie de {defenseur['name']} est maintenant {defenseur['hp']}")
             print(f"{defenseur['name']} a été vaincu! {attaquant['name']} est le gagnant!")
-            return attaquant, defenseur
+            return attaquant
 
         # Afficher la vie restante du défenseur
         print(f"La vie de {defenseur['name']} est maintenant {defenseur['hp']}")
