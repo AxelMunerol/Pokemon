@@ -1,5 +1,5 @@
 import random
-#ef
+#eféf
 
 #allo c es tmoixt
 def get_stat(pokemon, stat_name):
