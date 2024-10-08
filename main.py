@@ -61,7 +61,7 @@ def tournoi(participants):
 # Code pour télécharger et charger les Pokémon
 liste_id = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]  # IDs pour 16 pokémons aléatoires
 urls = []
-plage_1 = list(range(0, 1025))        # de 0 à 1025 inclus
+plage_1 = list(range(1, 1025))        # de 0 à 1025 inclus
 plage_2 = list(range(10001, 10278))    # de 10001 à 10277 inclus
 tous_les_numeros = plage_1 + plage_2
 numeros_random = random.sample(tous_les_numeros, 16)
