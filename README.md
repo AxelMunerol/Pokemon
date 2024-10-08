@@ -9,23 +9,18 @@ Combat simulé : Le Pokémon avec la meilleure vitesse attaque en premier. Si le
 Installation
 Cloner le dépôt :
 
-Copier le code
-git clone https://github.com/username/pokemon-battle-simulator.git
-cd pokemon-battle-simulator
-Installer les dépendances : Assurez-vous d'avoir Python 3 installé. Ensuite, installez les dépendances requises avec pip :
 
-Copier le code
 pip install -r requirements.txt
 Exécuter l'application : Vous pouvez lancer l'application avec :
 
-Copier le code
+
 python main.py
 Dépendances
 Python 3.x
 Requests : Utilisé pour effectuer des appels à l'API PokeAPI.
 Installer les dépendances en utilisant la commande suivante :
 
-Copier le code
+
 pip install requests
 Utilisation
 L'application simule des combats entre deux Pokémon, qui sont automatiquement sélectionnés à partir de l'API.
