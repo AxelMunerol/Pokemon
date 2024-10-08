@@ -1,6 +1,6 @@
 import random
 import requests
-
+#perdu
 def get_type_effectiveness():
     type_effectiveness = {}
     try:
