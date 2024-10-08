@@ -44,16 +44,17 @@ def get_move_details(move_url):
         return None
 
 def combat(f1, f2):
-    # Ensure both fighters have at least 4 moves
+    # Ensure both fighters have as many moves as available, but no more than 4
     fighter1_moves = random.sample(f1["moves"], min(4, len(f1["moves"])))
     fighter2_moves = random.sample(f2["moves"], min(4, len(f2["moves"])))
+
     # Get types
     type1_f1 = f1["types"][0]["type"]["name"]
     type2_f1 = f1["types"][1]["type"]["name"] if len(f1["types"]) > 1 else None
     type1_f2 = f2["types"][0]["type"]["name"]
     type2_f2 = f2["types"][1]["type"]["name"] if len(f2["types"]) > 1 else None
 
-    # Prepare fighters with relevant stats
+    # Prepare fighters with relevant stats and moves (fill missing moves with None)
     fighter1 = {
         'name': f1["name"],
         'hp': get_stat(f1, 'hp'),
@@ -64,11 +65,10 @@ def combat(f1, f2):
         'defense_spe': get_stat(f1, 'special-defense'),
         'type1': type1_f1,
         'type2': type2_f1,
-        'move1': get_move_details(fighter1_moves[0]['move']['url']),
-        'move2': get_move_details(fighter1_moves[1]['move']['url']),
-        'move3': get_move_details(fighter1_moves[2]['move']['url']),
-        'move4': get_move_details(fighter1_moves[3]['move']['url'])
-
+        'move1': get_move_details(fighter1_moves[0]['move']['url']) if len(fighter1_moves) > 0 else None,
+        'move2': get_move_details(fighter1_moves[1]['move']['url']) if len(fighter1_moves) > 1 else None,
+        'move3': get_move_details(fighter1_moves[2]['move']['url']) if len(fighter1_moves) > 2 else None,
+        'move4': get_move_details(fighter1_moves[3]['move']['url']) if len(fighter1_moves) > 3 else None,
     }
 
     fighter2 = {
@@ -81,12 +81,14 @@ def combat(f1, f2):
         'defense_spe': get_stat(f2, 'special-defense'),
         'type1': type1_f2,
         'type2': type2_f2,
-        'move1': get_move_details(fighter2_moves[0]['move']['url']),
-        'move2': get_move_details(fighter2_moves[1]['move']['url']),
-        'move3': get_move_details(fighter2_moves[2]['move']['url']),
-        'move4': get_move_details(fighter2_moves[3]['move']['url'])
-
+        'move1': get_move_details(fighter2_moves[0]['move']['url']) if len(fighter2_moves) > 0 else None,
+        'move2': get_move_details(fighter2_moves[1]['move']['url']) if len(fighter2_moves) > 1 else None,
+        'move3': get_move_details(fighter2_moves[2]['move']['url']) if len(fighter2_moves) > 2 else None,
+        'move4': get_move_details(fighter2_moves[3]['move']['url']) if len(fighter2_moves) > 3 else None,
     }
+
+    # Continue with the combat logic...
+
 
     if fighter1['speed'] > fighter2['speed']:
         attaquant, defenseur = fighter1, fighter2
