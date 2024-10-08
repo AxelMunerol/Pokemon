@@ -112,6 +112,12 @@ def combat(f1, f2):
         effectiveness = get_type_effectiveness()
         move_type_name = move_att['type']['name']
 
+        #ajout de la stat atk du bon type
+        if typeatk == 'special':
+            attack_power += attaquant['attack_spe']
+        else:
+            attack_power += attaquant['attack_phy']
+
         # Check effectiveness against defender's types
         for effective_type in effectiveness[move_type_name]['double_damage_to']:
             if effective_type in [defenseur['type1'], defenseur['type2']]:
