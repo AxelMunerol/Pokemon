@@ -8,11 +8,31 @@ def get_stat(pokemon, stat_name):
             return stat['base_stat']
     return None  # Si la stat n'est pas trouvée, retourne None
 
-def combat(f1, f2):
-    # Préparer les deux combattants avec leurs stats pertinentes
-    fighter1 = {'name': f1["name"], 'hp': get_stat(f1, 'hp'), 'attack_phy': get_stat(f1, 'attack'), 'attack_spe': get_stat(f1, 'special-attack'),'speed': get_stat(f1, 'speed'), 'defense_phy': get_stat(f1, 'defense'),'defense_spe': get_stat(f2, 'special-defense')}
-    fighter2 = {'name': f2["name"], 'hp': get_stat(f2, 'hp'), 'attack_phy': get_stat(f2, 'attack'), 'attack_spe': get_stat(f2, 'special-attack'),'speed': get_stat(f2, 'speed'), 'defense_phy': get_stat(f2, 'defense'),'defense_spe': get_stat(f2, 'special-defense')}
 
+
+
+def combat(f1, f2):
+    # cherche des types
+    type1_f1 = None
+    type2_f1 = None
+    for t in f1["types"]:
+        if t["slot"] == 1:
+            type1_f1 = t["type"]["name"]
+        elif t["slot"] == 2:
+            type2_f1 = t["type"]["name"]
+
+    type1_f2 = None
+    type2_f2 = None
+    for t in f2["types"]:
+        if t["slot"] == 1:
+            type1_f2 = t["type"]["name"]
+        elif t["slot"] == 2:
+            type2_f2 = t["type"]["name"]
+    # Préparer les deux combattants avec leurs stats pertinentes
+    fighter1 = {'name': f1["name"], 'hp': get_stat(f1, 'hp'), 'attack_phy': get_stat(f1, 'attack'), 'attack_spe': get_stat(f1, 'special-attack'),'speed': get_stat(f1, 'speed'), 'defense_phy': get_stat(f1, 'defense'),'defense_spe': get_stat(f2, 'special-defense'),'type1': type1_f1,'type2': type2_f1}
+    fighter2 = {'name': f2["name"], 'hp': get_stat(f2, 'hp'), 'attack_phy': get_stat(f2, 'attack'), 'attack_spe': get_stat(f2, 'special-attack'),'speed': get_stat(f2, 'speed'), 'defense_phy': get_stat(f2, 'defense'),'defense_spe': get_stat(f2, 'special-defense'),'type1': type1_f2,'type2': type2_f2}
+    print(fighter2)
+    print(fighter1)
 
     #choix phy ou spé
     if fighter1['attack_phy'] < fighter1['attack_spe']:
