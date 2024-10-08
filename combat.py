@@ -44,10 +44,9 @@ def get_move_details(move_url):
         return None
 
 def combat(f1, f2):
-    # Choose 4 moves
-    fighter1_moves = random.sample(f1["moves"], 4)
-    fighter2_moves = random.sample(f2["moves"], 4)
-
+    # Ensure both fighters have at least 4 moves
+    fighter1_moves = random.sample(f1["moves"], min(4, len(f1["moves"])))
+    fighter2_moves = random.sample(f2["moves"], min(4, len(f2["moves"])))
     # Get types
     type1_f1 = f1["types"][0]["type"]["name"]
     type2_f1 = f1["types"][1]["type"]["name"] if len(f1["types"]) > 1 else None
@@ -65,7 +64,11 @@ def combat(f1, f2):
         'defense_spe': get_stat(f1, 'special-defense'),
         'type1': type1_f1,
         'type2': type2_f1,
-        'moves': [move["move"]["url"] for move in fighter1_moves]
+        'move1': get_move_details(fighter1_moves[0]['move']['url']),
+        'move2': get_move_details(fighter1_moves[1]['move']['url']),
+        'move3': get_move_details(fighter1_moves[2]['move']['url']),
+        'move4': get_move_details(fighter1_moves[3]['move']['url'])
+
     }
 
     fighter2 = {
@@ -78,13 +81,13 @@ def combat(f1, f2):
         'defense_spe': get_stat(f2, 'special-defense'),
         'type1': type1_f2,
         'type2': type2_f2,
-        'moves': [move["move"]["url"] for move in fighter2_moves]
+        'move1': get_move_details(fighter2_moves[0]['move']['url']),
+        'move2': get_move_details(fighter2_moves[1]['move']['url']),
+        'move3': get_move_details(fighter2_moves[2]['move']['url']),
+        'move4': get_move_details(fighter2_moves[3]['move']['url'])
+
     }
 
-    print(fighter1)
-    print(fighter2)
-
-    # Determine who attacks first
     if fighter1['speed'] > fighter2['speed']:
         attaquant, defenseur = fighter1, fighter2
     elif fighter1['speed'] == fighter2['speed']:
@@ -96,23 +99,18 @@ def combat(f1, f2):
 
     # Combat loop
     while defenseur['hp'] > 0:
-        move_url = random.choice(attaquant['moves'])
-        move_details = get_move_details(move_url)
+        move_att = random.choice([attaquant['move1'], attaquant['move2'], attaquant['move3'], attaquant['move4']])
 
-        if move_details is None:
-            print("Failed to retrieve move details, skipping turn.")
-            continue  # Skip this turn if move details cannot be retrieved
-
-        attack_power = move_details.get("power", 0)
+        attack_power = move_att.get("power", 0)
         if not isinstance(attack_power, int) or attack_power < 0:
             attack_power = 0  # Reset to 0 if not an integer or negative
-        typeatk = move_details['damage_class']['name']
+        typeatk = move_att['damage_class']['name']
 
         # Set appropriate defense
         defenseur['defense'] = defenseur['defense_spe'] if typeatk == 'special' else defenseur['defense_phy']
 
         effectiveness = get_type_effectiveness()
-        move_type_name = move_details['type']['name']
+        move_type_name = move_att['type']['name']
 
         # Check effectiveness against defender's types
         for effective_type in effectiveness[move_type_name]['double_damage_to']:
@@ -136,7 +134,7 @@ def combat(f1, f2):
 
         defenseur['hp'] -= damage
 
-        print(f"{attaquant['name']} attaque {defenseur['name']} avec {move_details['name']} et inflige {damage} dégâts.")
+        print(f"{attaquant['name']} attaque {defenseur['name']} avec {move_att['name']} et inflige {damage} dégâts.")
 
         # Check if the defender is defeated
         if defenseur['hp'] <= 0:
