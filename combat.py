@@ -1,5 +1,4 @@
 import random
-#eféfgndn
 
 #allo c es tmoixt
 def get_stat(pokemon, stat_name):
@@ -11,8 +10,30 @@ def get_stat(pokemon, stat_name):
 
 def combat(f1, f2):
     # Préparer les deux combattants avec leurs stats pertinentes
-    fighter1 = {'name': f1["name"], 'hp': get_stat(f1, 'hp'), 'attack': get_stat(f1, 'attack'), 'speed': get_stat(f1, 'speed'), 'defense': get_stat(f1, 'defense')}
-    fighter2 = {'name': f2["name"], 'hp': get_stat(f2, 'hp'), 'attack': get_stat(f2, 'attack'), 'speed': get_stat(f2, 'speed'), 'defense': get_stat(f2, 'defense')}
+    fighter1 = {'name': f1["name"], 'hp': get_stat(f1, 'hp'), 'attack_phy': get_stat(f1, 'attack'), 'attack_spe': get_stat(f1, 'special-attack'),'speed': get_stat(f1, 'speed'), 'defense_phy': get_stat(f1, 'defense'),'defense_spe': get_stat(f2, 'special-defense')}
+    fighter2 = {'name': f2["name"], 'hp': get_stat(f2, 'hp'), 'attack_phy': get_stat(f2, 'attack'), 'attack_spe': get_stat(f2, 'special-attack'),'speed': get_stat(f2, 'speed'), 'defense_phy': get_stat(f2, 'defense'),'defense_spe': get_stat(f2, 'special-defense')}
+
+
+    #choix phy ou spé
+    if fighter1['attack_phy'] < fighter1['attack_spe']:
+        fighter1['attack'] = fighter1['attack_spe']
+        fighter2['defense'] = fighter2['defense_spe']
+        print(f"{fighter1["name"]} CHOISIT SON ATK SPE")
+    else:
+        fighter1['attack'] = fighter1['attack_phy']
+        fighter2['defense'] = fighter2['defense_phy']
+        print(f"{fighter1["name"]} CHOISIT SON ATK PHY")
+
+    if fighter2['attack_phy'] < fighter2['attack_spe']:
+        fighter2['attack'] = fighter2['attack_spe']
+        fighter1['defense'] = fighter1['defense_spe']
+        print(f"{fighter2["name"]} CHOISIT SON ATK SPE")
+    else:
+        fighter2['attack'] = fighter2['attack_phy']
+        fighter1['defense'] = fighter1['defense_phy']
+        print(f"{fighter2["name"]} CHOISIT SON ATK PHY")
+
+
 
     #recalcul des attaques
     fighter1['attack'] -= fighter2['defense']
