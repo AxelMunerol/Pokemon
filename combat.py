@@ -1,6 +1,6 @@
 import random
+import requests
 
-#allo c es tmoixt
 def get_stat(pokemon, stat_name):
     # Parcours les stats et retourne la stat demandée (base_stat) du Pokémon
     for stat in pokemon['stats']:
@@ -8,10 +8,24 @@ def get_stat(pokemon, stat_name):
             return stat['base_stat']
     return None  # Si la stat n'est pas trouvée, retourne None
 
+def get_move_details(move_url):
+    response = requests.get(move_url)
+    if response.status_code == 200:
+        return response.json()  # Retourne les détails du move sous forme de dictionnaire
+    else:
+        print(f"Erreur lors de la requête GET vers {move_url}")
+        return None
+
 
 
 
 def combat(f1, f2):
+
+    # Choix de 4 attaques
+    fighter1_moves = random.sample(f1["moves"], 4 )
+    fighter2_moves = random.sample(f2["moves"], 4 )
+
+
     # cherche des types
     type1_f1 = None
     type2_f1 = None
@@ -29,8 +43,8 @@ def combat(f1, f2):
         elif t["slot"] == 2:
             type2_f2 = t["type"]["name"]
     # Préparer les deux combattants avec leurs stats pertinentes
-    fighter1 = {'name': f1["name"], 'hp': get_stat(f1, 'hp'), 'attack_phy': get_stat(f1, 'attack'), 'attack_spe': get_stat(f1, 'special-attack'),'speed': get_stat(f1, 'speed'), 'defense_phy': get_stat(f1, 'defense'),'defense_spe': get_stat(f2, 'special-defense'),'type1': type1_f1,'type2': type2_f1}
-    fighter2 = {'name': f2["name"], 'hp': get_stat(f2, 'hp'), 'attack_phy': get_stat(f2, 'attack'), 'attack_spe': get_stat(f2, 'special-attack'),'speed': get_stat(f2, 'speed'), 'defense_phy': get_stat(f2, 'defense'),'defense_spe': get_stat(f2, 'special-defense'),'type1': type1_f2,'type2': type2_f2}
+    fighter1 = {'name': f1["name"], 'hp': get_stat(f1, 'hp'), 'attack_phy': get_stat(f1, 'attack'), 'attack_spe': get_stat(f1, 'special-attack'),'speed': get_stat(f1, 'speed'), 'defense_phy': get_stat(f1, 'defense'),'defense_spe': get_stat(f2, 'special-defense'),'type1': type1_f1,'type2': type2_f1,'moves': [move["move"]["url"] for move in fighter1_moves]}
+    fighter2 = {'name': f2["name"], 'hp': get_stat(f2, 'hp'), 'attack_phy': get_stat(f2, 'attack'), 'attack_spe': get_stat(f2, 'special-attack'),'speed': get_stat(f2, 'speed'), 'defense_phy': get_stat(f2, 'defense'),'defense_spe': get_stat(f2, 'special-defense'),'type1': type1_f2,'type2': type2_f2,'moves': [move["move"]["url"] for move in fighter2_moves]}
     print(fighter2)
     print(fighter1)
 
