@@ -1,7 +1,7 @@
 import random
 
 
-#allo c es tmoi
+#allo c es tmoixt
 def get_stat(pokemon, stat_name):
     # Parcours les stats et retourne la stat demandée (base_stat) du Pokémon
     for stat in pokemon['stats']:
